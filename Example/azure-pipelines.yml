@@ -1,0 +1,25 @@
+trigger:
+  - master
+
+schedules:
+  - cron: 0 * * * *
+    displayName: hourly schedule
+    branches:
+      include:
+      - master
+  
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  - group: storage-account-vars
+
+steps:      
+  - task: PowerShell@2
+    inputs:
+      filePath: 'Start-Pipeline.ps1'
+    env:
+      SYSTEM_ACCESSTOKEN: $(System.AccessToken)
+      STORAGEACCOUNTNAME: $(STORAGEACCOUNTNAME)
+      STORAGEACCOUNTKEY: $(STORAGEACCOUNTKEY)
+  
