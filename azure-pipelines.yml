@@ -1,0 +1,19 @@
+trigger:
+- master
+
+name: $(Rev:r)
+steps:
+
+  - pwsh: |
+      Write-Output $env:BUILD_BUILDNUMBER
+      $ver = "1.0.{0}" -f $env:BUILD_BUILDNUMBER
+      Write-Output ("release version: {0}" -f $ver)
+      Install-Module Az.Storage -Force
+      Update-ModuleManifest -Path ./AzureDevopsDataCollector/AzureDevopsDataCollector.psd1 -ModuleVersion $ver
+      Publish-Module -Name ./AzureDevopsDataCollector -NuGetApiKey $env:PSGALLERYAPIKEY
+    displayName: Publish to powershell gallery
+    name: publish
+    workingDirectory: $(build.sourcesDirectory)
+    failOnStderr: true
+    env:
+      PSGALLERYAPIKEY: $(psgalleryapikey)
