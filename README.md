@@ -2,9 +2,10 @@
 
 This module pulls data from the [Azure DevOps REST API](https://docs.microsoft.com/en-us/rest/api/azure/devops/?view=azure-devops-rest-5.1) and publishes to Azure table storage. The data can then be modeled in PowerBI into pretty graphs and stuff.
 
+![Example dashboard](https://github.com/dougbw/azure-devops-data-collector/blob/master/Example/example-dashboard-1.png?raw=true)
 
-This can answer questions across an organization such as:
-- High level resource usage (how many repos, projects, pipelines, etc)
+This can provide a holistic view across an organization of:
+- Resource usage (how many repos, projects, pipelines, etc)
 - Development activity (commits, pull requests)
 - Pipeline success rate/duration
 - Deployments to environments
