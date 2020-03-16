@@ -93,13 +93,13 @@
         PSData = @{
     
             # Tags applied to this module. These help with module discovery in online galleries.
-            Tags = 'Terraform','Terraform'
+            Tags = 'Azure','DevOps', 'Dashboard'
     
             # A URL to the license for this module.
             # LicenseUri = ''
     
             # A URL to the main website for this project.
-            ProjectUri = 'https://tbc'
+            ProjectUri = 'https://github.com/dougbw/azure-devops-data-collector'
     
             # A URL to an icon representing this module.
             # IconUri = ''
