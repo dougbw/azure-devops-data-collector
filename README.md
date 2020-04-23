@@ -15,19 +15,25 @@ This can provide a holistic view across an organization of:
 
 # Installation
 
+This module can be installed from the [PowerShell Gallery](https://www.powershellgallery.com/packages/AzureDevopsDataCollector)
+
 ```
 Install-Module AzureDevopsDataCollector
 ```
 
 # Pre-requsuites
-* Azure Storage Account (for data export)
-* PowerBI (for dashboard)
+* [Azure PowerShell Module](https://docs.microsoft.com/en-us/powershell/azure/new-azureps-module-az)
+* Azure Storage Account 
+* [PowerBI Desktop](https://powerbi.microsoft.com/en-us/desktop/)
+
 
 # Usage (inside an AzDo pipeline)
 
-The quickest way to use this is to run it inside a scheduled Azure DevOps pipeline, as the job can consume [predefined variables](https://docs.microsoft.com/en-us/azure/devops/pipelines/build/variables?view=azure-devops&tabs=yaml#systemaccesstoken) containing the organization name and api token.
+The quickest way to use this is to run it inside a scheduled Azure DevOps pipeline, as the job can consume [predefined variables](https://docs.microsoft.com/en-us/azure/devops/pipelines/build/variables?view=azure-devops&tabs=yaml#systemaccesstoken) containing the organization name and api token. This pipeline can then be triggered on a scheduled using the built-in [pipeline scheduling](https://docs.microsoft.com/en-us/azure/devops/pipelines/process/scheduled-triggers?view=azure-devops&tabs=yaml) feature.
 
-* Create a repo in Azure DevOps with the contents of the **Example** directory
+* Create a repo in Azure DevOps and copy the following files into it from the **Example** directoy:
+    * [azure-pipelines.yml](https://github.com/dougbw/azure-devops-data-collector/blob/master/Example/azure-pipelines.yml)
+    * [Start-Pipeline.ps1](https://github.com/dougbw/azure-devops-data-collector/blob/master/Example/Start-Pipeline.ps1)
 * Create a library variable set named **storage-account-vars** containing the following variables
     * StorageAccountName
     * StorageAccountKey
@@ -36,6 +42,7 @@ The quickest way to use this is to run it inside a scheduled Azure DevOps pipeli
 # Usage (outside an AzDo pipeline)
 ```
 Import-Module AzureDevopsDataCollector
+Import-Module Az
 $Params = @{
     Organization = $Organization
     PersonalAccessToken = $PersonalAccessToken
@@ -45,10 +52,18 @@ $Params = @{
 Invoke-AzDoDataCollector @Params
 ```
 
+# Using the dashboard
+
+Open the powerbi template file from this repo. Upon opening it *should* prompt for a storage account name and key. Save it as a powerbi report file (.pbix) once you have completed the initial data load.
+
+This template contains the data model and relationships between the data (E.g commits to repos, deployments to environments) so use this as a starting point and delete any pages / visualizations you don't want.
+
+
 # What data is collected
 
-The data is pulled from the Azure DevOps REST API 
+The data which is currently pulled from the Azure DevOps REST API. The module *can* be extended to collect data from other api endpoints through [configuration files](https://github.com/dougbw/azure-devops-data-collector/tree/master/AzureDevopsDataCollector/Config) although I have not documented the schema for this yet.
 
+```
 * Projects
     * Pipelines
         * Pipeline runs
@@ -58,6 +73,6 @@ The data is pulled from the Azure DevOps REST API
         * Commits
         * Pull requests
 * Work Items
-
+```
 
 
